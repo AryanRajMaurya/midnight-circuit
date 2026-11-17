@@ -1,0 +1,147 @@
+/* MIDNIGHT CIRCUIT — interface.
+ * White ink, one pink accent, cyan for "on", no panel behind HUD text.
+ */
+
+:root {
+  --ink: #fff;
+  --ink-70: rgb(255 255 255 / 0.7);
+  --ink-45: rgb(255 255 255 / 0.45);
+  --pink: #ff2e88;
+  --pink-soft: rgb(255 46 136 / 0.32);
+  --cyan: #19e6f0;
+  --night: #0a0618;
+  --display: "DIN Condensed", Bahnschrift, "Roboto Condensed", "Avenir Next Condensed",
+             "Arial Narrow", "Liberation Sans Narrow", "DejaVu Sans Condensed", Impact, sans-serif;
+  --text: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--night);
+  color: var(--ink);
+  font-family: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+#scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+
+.wordmark {
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  transform: skewX(-9deg);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.wordmark__a { color: var(--ink); }
+.wordmark__b { color: var(--ink); margin-left: 0.18em; }
+.wordmark--lg { font-size: clamp(3rem, 11vw, 7rem); justify-content: center; }
+
+/* ── loader ────────────────────────────────────────────────────────────── */
+
+.loader {
+  position: fixed; inset: 0; z-index: 30;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1rem; padding: 2rem; text-align: center;
+  background: radial-gradient(120% 90% at 50% 62%, #2a0a3a 0%, #120726 45%, var(--night) 100%);
+  transition: opacity 420ms ease;
+}
+.loader:not(.is-on) { opacity: 0; pointer-events: none; }
+.loader .wordmark { font-size: clamp(2.4rem, 8vw, 5rem); }
+.loader__sub { margin: 0; font-size: 0.7rem; letter-spacing: 0.34em; color: var(--ink-70); }
+.loader__label { margin: 1.4rem 0 0; font-size: 0.72rem; letter-spacing: 0.16em; color: var(--ink-70); min-height: 1.2em; }
+.loader__bar { width: min(20rem, 70vw); height: 2px; background: rgb(255 255 255 / 0.14); }
+.loader__bar span { display: block; height: 100%; width: 0; background: var(--pink); transition: width 180ms linear; }
+
+/* ── screens ───────────────────────────────────────────────────────────── */
+
+.screen {
+  position: fixed; inset: 0; z-index: 20;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1.1rem; padding: 2rem; text-align: center;
+  background: radial-gradient(120% 90% at 50% 60%, rgb(42 10 58 / 0.86), rgb(10 6 24 / 0.94));
+  backdrop-filter: blur(2px);
+}
+.screen__sub { margin: 0; font-size: 0.7rem; letter-spacing: 0.34em; color: var(--ink-70); }
+.screen__h { margin: 0; font-family: var(--display); font-size: clamp(2rem, 6vw, 3.4rem); letter-spacing: 0.02em; }
+.screen__fine { margin: 0.4rem 0 0; font-size: 0.66rem; letter-spacing: 0.1em; color: var(--ink-45); }
+
+.panel {
+  display: grid; gap: 0.5rem; margin-top: 0.4rem;
+  padding: 0.9rem 1rem; border: 1px solid rgb(255 255 255 / 0.14);
+}
+.row { display: flex; align-items: center; justify-content: space-between; gap: 1.4rem; }
+.row label { font-size: 0.68rem; letter-spacing: 0.16em; color: var(--ink-70); }
+
+select, .btn {
+  font-family: var(--text); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink); background: transparent; border: 1px solid rgb(255 255 255 / 0.28);
+  padding: 0.45rem 0.8rem; cursor: pointer;
+}
+select { appearance: none; min-width: 9rem; text-align: right; }
+.btn:hover, select:hover { border-color: var(--pink); }
+.btn--primary { background: var(--pink); border-color: var(--pink); color: #fff; padding: 0.7rem 2.4rem; }
+.btn--primary:hover { background: #ff4a9b; }
+.btn-row { display: flex; gap: 0.7rem; flex-wrap: wrap; justify-content: center; }
+
+.keys {
+  list-style: none; margin: 1.4rem 0 0; padding: 0;
+  display: grid; gap: 0.3rem; font-size: 0.66rem; letter-spacing: 0.14em; color: var(--ink-70);
+}
+.keys li { display: flex; justify-content: space-between; gap: 2rem; }
+.keys kbd { font: inherit; color: var(--ink); }
+
+/* ── HUD ───────────────────────────────────────────────────────────────── */
+
+.hud { position: fixed; inset: 0; z-index: 10; pointer-events: none; }
+.hud > * { position: absolute; }
+
+.hud__speed { left: 1.6rem; bottom: 1.4rem; display: flex; align-items: baseline; gap: 0.5rem; }
+.hud__value {
+  font-family: var(--display); font-size: clamp(2.6rem, 6vw, 4rem); line-height: 0.8;
+  font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 #000, 0 0 22px var(--pink-soft);
+}
+.hud__unit { font-size: 0.66rem; letter-spacing: 0.28em; color: var(--ink-70); }
+
+.hud__meta {
+  top: 1.4rem; left: 1.6rem; font-size: 0.7rem; letter-spacing: 0.22em; color: var(--ink-70);
+  text-shadow: 0 1px 0 #000;
+}
+.hud__sep { margin: 0 0.5rem; color: var(--pink); }
+
+.hud__map { right: 1.6rem; bottom: 1.4rem; width: 108px; height: 108px; opacity: 0.85; }
+.hud__map canvas { display: block; width: 100%; height: 100%; }
+
+.hud__tools { right: 1.6rem; top: 1.4rem; display: flex; gap: 0.4rem; pointer-events: auto; }
+.tool {
+  font-size: 0.6rem; letter-spacing: 0.14em; color: var(--ink-70);
+  background: transparent; border: 1px solid rgb(255 255 255 / 0.2); padding: 0.34rem 0.5rem; cursor: pointer;
+}
+.tool:hover { color: var(--ink); border-color: var(--pink); }
+.tool[aria-pressed="true"] { color: var(--cyan); border-color: var(--cyan); }
+
+.hud__toast {
+  left: 50%; bottom: 2.2rem; transform: translateX(-50%);
+  font-size: 0.66rem; letter-spacing: 0.2em; color: var(--ink);
+  background: rgb(10 6 24 / 0.8); border: 1px solid rgb(255 255 255 / 0.16);
+  padding: 0.5rem 0.9rem; white-space: nowrap;
+}
+
+/* ── fatal ─────────────────────────────────────────────────────────────── */
+
+.fatal {
+  position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.6rem; padding: 2rem;
+  background: var(--night); text-align: center;
+}
+.fatal h2 { margin: 0; font-family: var(--display); font-size: 2rem; color: var(--pink); }
+.fatal p { margin: 0; max-width: 46rem; font-size: 0.76rem; color: var(--ink-70); }
+
+[hidden] { display: none !important; }

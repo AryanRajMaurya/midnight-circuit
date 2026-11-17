@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MIDNIGHT CIRCUIT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="description" content="MIDNIGHT CIRCUIT — a free-roam drive through a procedural neon city, generated entirely by code.">
+<meta name="theme-color" content="#0a0618">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0618'/%3E%3Ccircle cx='32' cy='26' r='14' fill='%23ff2e88'/%3E%3Crect y='40' width='64' height='3' fill='%2319e6f0'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-state="boot">
+
+<canvas id="scene" aria-label="MIDNIGHT CIRCUIT"></canvas>
+
+<!-- Loading: static markup so something is on screen before any script runs. -->
+<div class="loader is-on" id="loader">
+  <div class="wordmark">
+    <span class="wordmark__a">MIDNIGHT</span>
+    <span class="wordmark__b">CIRCUIT</span>
+  </div>
+  <p class="loader__sub">A FREE-ROAM DRIVE THROUGH THE NEON DISTRICT</p>
+  <p class="loader__label" id="loader-label">Starting</p>
+  <div class="loader__bar"><span id="loader-bar"></span></div>
+</div>
+
+<!-- Title screen -->
+<div class="screen title" id="title" hidden>
+  <div class="wordmark wordmark--lg">
+    <span class="wordmark__a">MIDNIGHT</span>
+    <span class="wordmark__b">CIRCUIT</span>
+  </div>
+  <p class="screen__sub">A FREE-ROAM DRIVE THROUGH THE NEON DISTRICT</p>
+
+  <div class="panel">
+    <div class="row">
+      <label for="opt-time">Time</label>
+      <select id="opt-time">
+        <option value="dusk">Dusk</option>
+        <option value="night" selected>Night</option>
+        <option value="midnight">Midnight</option>
+      </select>
+    </div>
+    <div class="row">
+      <label for="opt-quality">Quality</label>
+      <select id="opt-quality">
+        <option value="high" selected>High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn btn--primary" id="start">DRIVE</button>
+
+  <ul class="keys">
+    <li><span>Throttle / brake</span><kbd>W S</kbd></li>
+    <li><span>Steer</span><kbd>A D</kbd></li>
+    <li><span>Look around</span><kbd>drag</kbd></li>
+    <li><span>Nitrous</span><kbd>shift</kbd></li>
+    <li><span>Recover the car</span><kbd>R</kbd></li>
+    <li><span>Pause</span><kbd>esc</kbd></li>
+  </ul>
+  <p class="screen__fine">Everything here is generated in code — no model, texture or audio file.</p>
+</div>
+
+<!-- HUD -->
+<div class="hud" id="hud" hidden>
+  <div class="hud__speed">
+    <span class="hud__value" id="speed">0</span>
+    <span class="hud__unit">KM/H</span>
+  </div>
+
+  <div class="hud__meta">
+    <span id="clock">NIGHT</span>
+    <span class="hud__sep">·</span>
+    <span id="district">—</span>
+  </div>
+
+  <div class="hud__map"><canvas id="minimap" width="180" height="180" aria-hidden="true"></canvas></div>
+
+  <div class="hud__tools">
+    <button class="tool" id="tool-time" type="button" title="Change the time">TIME</button>
+    <button class="tool" id="tool-mute" type="button" title="Mute">SOUND</button>
+    <button class="tool" id="tool-pause" type="button" title="Pause">II</button>
+  </div>
+
+  <div class="hud__toast" id="toast" hidden></div>
+</div>
+
+<!-- Pause -->
+<div class="screen pause" id="pause" hidden>
+  <h2 class="screen__h">PAUSED</h2>
+  <div class="panel">
+    <div class="row">
+      <label for="pause-time">Time</label>
+      <select id="pause-time">
+        <option value="dusk">Dusk</option>
+        <option value="night">Night</option>
+        <option value="midnight">Midnight</option>
+      </select>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn--primary" id="resume">RESUME</button>
+    <button class="btn" id="quit">QUIT TO TITLE</button>
+  </div>
+</div>
+
+<div class="fatal" id="fatal" hidden>
+  <h2>Something broke</h2>
+  <p id="fatal-text"></p>
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
